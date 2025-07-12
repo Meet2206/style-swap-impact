@@ -61,7 +61,39 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// ReWear Custom Colors
+				sage: {
+					DEFAULT: 'hsl(var(--sage-green))',
+					foreground: 'hsl(var(--primary-foreground))'
+				},
+				amber: {
+					DEFAULT: 'hsl(var(--amber-gold))',
+					foreground: 'hsl(var(--accent-foreground))'
+				},
+				teal: {
+					DEFAULT: 'hsl(var(--eco-teal))',
+					foreground: 'hsl(var(--secondary-foreground))'
+				},
+				olive: {
+					DEFAULT: 'hsl(var(--olive-drab))',
+					foreground: 'hsl(var(--olive-foreground))'
 				}
+			},
+			fontFamily: {
+				'poppins': ['Poppins', 'sans-serif'],
+				'inter': ['Inter', 'sans-serif'],
+				'counter': ['Space Mono', 'monospace'],
+			},
+			backgroundImage: {
+				'gradient-eco': 'var(--gradient-eco)',
+				'gradient-warm': 'var(--gradient-warm)',
+				'gradient-subtle': 'var(--gradient-subtle)',
+			},
+			boxShadow: {
+				'eco': 'var(--shadow-eco)',
+				'warm': 'var(--shadow-warm)',
+				'card': 'var(--shadow-card)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
