@@ -14,6 +14,16 @@ export const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
         <div className="absolute top-40 right-20 text-4xl">🌱</div>
         <div className="absolute bottom-20 left-20 text-5xl">👕</div>
         <div className="absolute bottom-40 right-10 text-4xl">🌍</div>
+        
+        {/* Additional clothing-related elements */}
+        <div className="absolute top-32 left-1/4 text-3xl">👗</div>
+        <div className="absolute top-60 right-1/3 text-5xl">👖</div>
+        <div className="absolute bottom-32 right-1/4 text-3xl">👟</div>
+        <div className="absolute top-1/2 left-16 text-4xl">🧥</div>
+        <div className="absolute bottom-60 left-1/3 text-3xl">👒</div>
+        <div className="absolute top-80 right-12 text-3xl">🧳</div>
+        <div className="absolute bottom-80 right-1/2 text-4xl">♻️</div>
+        <div className="absolute top-1/3 right-8 text-3xl">🎽</div>
       </div>
 
       <div className="container mx-auto px-4 py-20">
