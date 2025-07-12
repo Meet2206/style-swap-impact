@@ -25,8 +25,8 @@ const categories: CategoryItem[] = [
       { name: "Hoodies", path: "hoodies", icon: "🧥" },
       { name: "Shirts", path: "shirts", icon: "👔" },
       { name: "Footwear", path: "footwear", icon: "👟" },
-      { name: "Accessories", path: "accessories", icon: "🎒" }
-    ]
+      { name: "Accessories", path: "accessories", icon: "🎒" },
+    ],
   },
   {
     name: "Men Traditionals",
@@ -36,8 +36,8 @@ const categories: CategoryItem[] = [
       { name: "Sherwanis", path: "sherwanis", icon: "👘" },
       { name: "Dhoti", path: "dhoti", icon: "👔" },
       { name: "Ethnic Jackets", path: "ethnic-jackets", icon: "🧥" },
-      { name: "Traditional Footwear", path: "traditional-footwear", icon: "👡" }
-    ]
+      { name: "Traditional Footwear", path: "traditional-footwear", icon: "👡" },
+    ],
   },
   {
     name: "Women",
@@ -48,8 +48,8 @@ const categories: CategoryItem[] = [
       { name: "Jeans", path: "jeans", icon: "👖" },
       { name: "Skirts", path: "skirts", icon: "👗" },
       { name: "Footwear", path: "footwear", icon: "👠" },
-      { name: "Accessories", path: "accessories", icon: "👜" }
-    ]
+      { name: "Accessories", path: "accessories", icon: "👜" },
+    ],
   },
   {
     name: "Women Traditionals",
@@ -59,8 +59,8 @@ const categories: CategoryItem[] = [
       { name: "Kurtis", path: "kurtis", icon: "👚" },
       { name: "Lehengas", path: "lehengas", icon: "👗" },
       { name: "Salwar Suits", path: "salwar-suits", icon: "👘" },
-      { name: "Ethnic Footwear", path: "ethnic-footwear", icon: "👡" }
-    ]
+      { name: "Ethnic Footwear", path: "ethnic-footwear", icon: "👡" },
+    ],
   },
   {
     name: "Winter Wears",
@@ -71,30 +71,14 @@ const categories: CategoryItem[] = [
       { name: "Coats", path: "coats", icon: "🧥" },
       { name: "Thermals", path: "thermals", icon: "👕" },
       { name: "Scarves", path: "scarves", icon: "🧣" },
-      { name: "Gloves", path: "gloves", icon: "🧤" }
-    ]
-  }
+      { name: "Gloves", path: "gloves", icon: "🧤" },
+    ],
+  },
 ];
 
 export const CategoryNavbar = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const navigate = useNavigate();
-
-  const handleCategoryHover = (categoryName: string) => {
-    setHoveredCategory(categoryName);
-    setActiveCategory(categoryName);
-  };
-
-  const handleCategoryLeave = () => {
-    setHoveredCategory(null);
-    // Small delay before hiding dropdown to allow for smooth navigation
-    setTimeout(() => {
-      if (!hoveredCategory) {
-        setActiveCategory(null);
-      }
-    }, 150);
-  };
 
   const handleSubcategoryClick = (categoryPath: string, subcategoryPath: string) => {
     navigate(`/${categoryPath}/${subcategoryPath}`);
@@ -110,21 +94,25 @@ export const CategoryNavbar = () => {
             <div
               key={category.name}
               className="relative"
-              onMouseEnter={() => handleCategoryHover(category.name)}
-              onMouseLeave={handleCategoryLeave}
+              onMouseEnter={() => setActiveCategory(category.name)}
+              onMouseLeave={() => setActiveCategory(null)}
             >
               <button
                 className={cn(
                   "flex items-center space-x-1 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300",
                   "hover:bg-primary/10 hover:text-primary",
-                  activeCategory === category.name ? "bg-primary/10 text-primary" : "text-foreground"
+                  activeCategory === category.name
+                    ? "bg-primary/10 text-primary"
+                    : "text-foreground"
                 )}
               >
                 <span>{category.name}</span>
-                <ChevronDown className={cn(
-                  "w-4 h-4 transition-transform duration-300",
-                  activeCategory === category.name ? "rotate-180" : ""
-                )} />
+                <ChevronDown
+                  className={cn(
+                    "w-4 h-4 transition-transform duration-300",
+                    activeCategory === category.name ? "rotate-180" : ""
+                  )}
+                />
               </button>
 
               {/* Dropdown Menu */}
@@ -134,7 +122,9 @@ export const CategoryNavbar = () => {
                     {category.subcategories.map((subcategory) => (
                       <button
                         key={subcategory.path}
-                        onClick={() => handleSubcategoryClick(category.path, subcategory.path)}
+                        onClick={() =>
+                          handleSubcategoryClick(category.path, subcategory.path)
+                        }
                         className="flex items-center w-full text-left px-4 py-3 text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors duration-200"
                       >
                         <span className="text-2xl mr-3">{subcategory.icon}</span>

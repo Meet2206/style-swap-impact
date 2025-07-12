@@ -2,13 +2,18 @@ import { useState } from "react";
 import { X, User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: (username: string) => void;
+  onLogin: (user: { username: string; avatar: number }) => void;
 }
 
 const avatarOptions = [
@@ -16,37 +21,65 @@ const avatarOptions = [
   { id: 2, emoji: "🌱", name: "Eco Warrior" },
   { id: 3, emoji: "♻️", name: "Recycler" },
   { id: 4, emoji: "🍃", name: "Green Thumb" },
-  { id: 5, emoji: "🌍", name: "Earth Lover" }
+  { id: 5, emoji: "🌍", name: "Earth Lover" },
 ];
 
 export const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedAvatar, setSelectedAvatar] = useState(1);
+  const [selectedAvatar, setSelectedAvatar] = useState<number>(1);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     username: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
+  const resetForm = () => {
+    setFormData({
+      email: "",
+      password: "",
+      username: "",
+      confirmPassword: "",
+    });
+    setSelectedAvatar(1);
+    setShowPassword(false);
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
+
   const handleLogin = () => {
-    // Simple validation
     if (formData.email && formData.password) {
-      onLogin(formData.username || formData.email.split('@')[0]);
+      const user: { username: string; avatar: number } = {
+        username: formData.username || formData.email.split("@")[0],
+        avatar: selectedAvatar,
+      };
+      onLogin(user);
       onClose();
     }
   };
 
   const handleSignup = () => {
-    // Simple validation
-    if (formData.email && formData.password && formData.username && formData.password === formData.confirmPassword) {
-      onLogin(formData.username);
-      onClose();
+    if (
+      formData.email &&
+      formData.password &&
+      formData.username &&
+      formData.password === formData.confirmPassword
+    ) {
+      const user: { username: string; avatar: number } = {
+        username: formData.username,
+        avatar: selectedAvatar,
+      };
+      onLogin(user);
+      handleClose();
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md bg-background border-border">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl font-poppins bg-gradient-eco bg-clip-text text-transparent">
@@ -60,6 +93,7 @@ export const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
           </TabsList>
 
+          {/* Login Tab */}
           <TabsContent value="login" className="space-y-4 mt-6">
             <div className="space-y-4">
               <div className="relative">
@@ -69,7 +103,9 @@ export const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
                   placeholder="Email address"
                   className="pl-10"
                   value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, email: e.target.value }))
+                  }
                 />
               </div>
 
@@ -80,14 +116,23 @@ export const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
                   placeholder="Password"
                   className="pl-10 pr-10"
                   value={formData.password}
-                  onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      password: e.target.value,
+                    }))
+                  }
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               </div>
 
@@ -97,11 +142,13 @@ export const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
             </div>
           </TabsContent>
 
+          {/* Sign Up Tab */}
           <TabsContent value="signup" className="space-y-4 mt-6">
             <div className="space-y-4">
-              {/* Avatar Selection */}
               <div>
-                <label className="text-sm font-medium mb-3 block">Choose your avatar</label>
+                <label className="text-sm font-medium mb-3 block">
+                  Choose your avatar
+                </label>
                 <div className="flex justify-center space-x-2">
                   {avatarOptions.map((avatar) => (
                     <button
@@ -109,8 +156,8 @@ export const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
                       onClick={() => setSelectedAvatar(avatar.id)}
                       className={`w-12 h-12 rounded-full border-2 flex items-center justify-center text-lg transition-all duration-300 ${
                         selectedAvatar === avatar.id
-                          ? 'border-primary bg-primary/10 scale-110'
-                          : 'border-border hover:border-primary/50'
+                          ? "border-primary bg-primary/10 scale-110"
+                          : "border-border hover:border-primary/50"
                       }`}
                     >
                       {avatar.emoji}
@@ -126,7 +173,12 @@ export const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
                   placeholder="Username"
                   className="pl-10"
                   value={formData.username}
-                  onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      username: e.target.value,
+                    }))
+                  }
                 />
               </div>
 
@@ -137,7 +189,9 @@ export const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
                   placeholder="Email address"
                   className="pl-10"
                   value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, email: e.target.value }))
+                  }
                 />
               </div>
 
@@ -148,14 +202,23 @@ export const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
                   placeholder="Password"
                   className="pl-10 pr-10"
                   value={formData.password}
-                  onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      password: e.target.value,
+                    }))
+                  }
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               </div>
 
@@ -166,7 +229,12 @@ export const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
                   placeholder="Confirm Password"
                   className="pl-10"
                   value={formData.confirmPassword}
-                  onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      confirmPassword: e.target.value,
+                    }))
+                  }
                 />
               </div>
 
@@ -178,7 +246,7 @@ export const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
         </Tabs>
 
         <div className="text-center text-xs text-muted-foreground mt-4">
-          By continuing, you agree to ReWear's sustainable fashion mission
+          By continuing, you agree to ReWear's sustainable fashion mission.
         </div>
       </DialogContent>
     </Dialog>

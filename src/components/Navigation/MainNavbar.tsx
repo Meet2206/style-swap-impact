@@ -1,18 +1,40 @@
 import { useState } from "react";
-import { Search, Menu, User, ShoppingCart, Package, Home, LogOut } from "lucide-react";
+import {
+  Search,
+  Menu,
+  User,
+  ShoppingCart,
+  Package,
+  Home,
+  LogOut,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Link } from "react-router-dom";
+import { Users } from "@/types";
+import { LiveCounter } from "../ImpactCounter/LiveCounter";
 
 interface MainNavbarProps {
   isLoggedIn?: boolean;
-  username?: string;
+  username?: Users;
   onLoginClick?: () => void;
   onLogout?: () => void;
 }
 
-export const MainNavbar = ({ isLoggedIn = false, username, onLoginClick, onLogout }: MainNavbarProps) => {
+export const MainNavbar = ({
+  isLoggedIn,
+  username,
+  onLoginClick,
+  onLogout,
+}: MainNavbarProps) => {
+  console.log("usernmae", username);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   return (
@@ -28,9 +50,11 @@ export const MainNavbar = ({ isLoggedIn = false, username, onLoginClick, onLogou
 
           {/* Search Bar - Desktop & Tablet */}
           <div className="hidden md:flex flex-1 max-w-xl mx-8">
-            <div className={`relative w-full transition-all duration-300 ${
-              isSearchFocused ? 'scale-105' : ''
-            }`}>
+            <div
+              className={`relative w-full transition-all duration-300 ${
+                isSearchFocused ? "scale-105" : ""
+              }`}
+            >
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 type="text"
@@ -45,46 +69,47 @@ export const MainNavbar = ({ isLoggedIn = false, username, onLoginClick, onLogou
           {/* Impact Counter & Desktop Actions */}
           <div className="hidden md:flex items-center space-x-6">
             {/* Live Impact Counter */}
-            <div className="flex items-center space-x-4 bg-gradient-eco text-white rounded-lg px-4 py-2 shadow-eco">
-              <div className="text-center">
-                <div className="text-xs opacity-80">Clothes</div>
-                <div className="text-sm font-bold counter-flip">12,847</div>
-              </div>
-              <div className="h-6 w-px bg-white/30"></div>
-              <div className="text-center">
-                <div className="text-xs opacity-80">Waste (kg)</div>
-                <div className="text-sm font-bold counter-flip">3,456</div>
-              </div>
-              <div className="h-6 w-px bg-white/30"></div>
-              <div className="text-center">
-                <div className="text-xs opacity-80">CO₂ (kg)</div>
-                <div className="text-sm font-bold counter-flip">2,789</div>
-              </div>
-            </div>
+            <LiveCounter />
 
             {/* User Actions */}
             {isLoggedIn ? (
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+                <DropdownMenuTrigger>
                   <Button variant="outline" className="btn-amber">
                     <User className="w-4 h-4 mr-2" />
-                    {username || "User"}
+                    {username.username || "User"}
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-48 dropdown-eco">
-                  <DropdownMenuItem className="eco-hover">
-                    <Home className="w-4 h-4 mr-2" />
-                    Dashboard
+
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
+                    <Link
+                      to="/dashboard"
+                      className="eco-hover flex items-center"
+                    >
+                      <Home className="w-4 h-4 mr-2" />
+                      Dashboard
+                    </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="eco-hover">
-                    <Package className="w-4 h-4 mr-2" />
-                    Inventory
+
+                  <DropdownMenuItem asChild>
+                    <Link
+                      to="/inventory"
+                      className="eco-hover flex items-center"
+                    >
+                      <Package className="w-4 h-4 mr-2" />
+                      Inventory
+                    </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="eco-hover">
-                    <ShoppingCart className="w-4 h-4 mr-2" />
-                    Cart
+
+                  <DropdownMenuItem asChild>
+                    <Link to="/cart" className="eco-hover flex items-center">
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      Cart
+                    </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={onLogout} className="eco-hover">
+
+                  <DropdownMenuItem onSelect={onLogout} className="eco-hover">
                     <LogOut className="w-4 h-4 mr-2" />
                     Logout
                   </DropdownMenuItem>
@@ -120,20 +145,35 @@ export const MainNavbar = ({ isLoggedIn = false, username, onLoginClick, onLogou
                   {/* Mobile Navigation */}
                   {isLoggedIn ? (
                     <div className="space-y-2">
-                      <div className="text-lg font-medium mb-4">Hi, {username || "User"}!</div>
-                      <Button variant="ghost" className="w-full justify-start eco-hover">
+                      <div className="text-lg font-medium mb-4">
+                        Hi, {username.username || "User"}!
+                      </div>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start eco-hover"
+                      >
                         <Home className="w-4 h-4 mr-2" />
                         Dashboard
                       </Button>
-                      <Button variant="ghost" className="w-full justify-start eco-hover">
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start eco-hover"
+                      >
                         <Package className="w-4 h-4 mr-2" />
                         Inventory
                       </Button>
-                      <Button variant="ghost" className="w-full justify-start eco-hover">
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start eco-hover"
+                      >
                         <ShoppingCart className="w-4 h-4 mr-2" />
                         Cart
                       </Button>
-                      <Button onClick={onLogout} variant="ghost" className="w-full justify-start eco-hover">
+                      <Button
+                        onClick={onLogout}
+                        variant="ghost"
+                        className="w-full justify-start eco-hover"
+                      >
                         <LogOut className="w-4 h-4 mr-2" />
                         Logout
                       </Button>

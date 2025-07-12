@@ -7,35 +7,23 @@ import { HeroSection } from "@/components/Landing/HeroSection";
 import { WhyReWear } from "@/components/Landing/WhyReWear";
 
 const Index = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState("");
-  const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const handleLogin = (user: string) => {
-    setUsername(user);
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUsername("");
-  };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <MainNavbar
+      {/* <MainNavbar
         isLoggedIn={isLoggedIn}
         username={username}
         onLoginClick={() => setShowLoginModal(true)}
         onLogout={handleLogout}
-      />
+      /> */}
       <CategoryNavbar />
 
 
       {/* Main Content */}
       <main>
-        <HeroSection onGetStarted={() => setShowLoginModal(true)} />
+        {/* <HeroSection onGetStarted={() => setShowLoginModal(true)} /> */}
         <WhyReWear />
       </main>
 
@@ -86,12 +74,7 @@ const Index = () => {
         </div>
       </footer>
 
-      {/* Login Modal */}
-      <LoginModal
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        onLogin={handleLogin}
-      />
+     
     </div>
   );
 };
