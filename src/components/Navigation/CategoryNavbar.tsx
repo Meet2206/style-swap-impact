@@ -1,38 +1,85 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
+
+interface SubcategoryItem {
+  name: string;
+  path: string;
+  icon: string;
+}
 
 interface CategoryItem {
   name: string;
-  subcategories: string[];
+  path: string;
+  subcategories: SubcategoryItem[];
 }
 
 const categories: CategoryItem[] = [
   {
     name: "Men",
-    subcategories: ["T-Shirts", "Jeans", "Hoodies", "Shirts", "Footwear", "Accessories"]
+    path: "men",
+    subcategories: [
+      { name: "T-Shirts", path: "t-shirts", icon: "👕" },
+      { name: "Jeans", path: "jeans", icon: "👖" },
+      { name: "Hoodies", path: "hoodies", icon: "🧥" },
+      { name: "Shirts", path: "shirts", icon: "👔" },
+      { name: "Footwear", path: "footwear", icon: "👟" },
+      { name: "Accessories", path: "accessories", icon: "🎒" }
+    ]
   },
   {
     name: "Men Traditionals",
-    subcategories: ["Kurtas", "Sherwanis", "Dhoti", "Ethnic Jackets", "Traditional Footwear"]
+    path: "men-traditionals",
+    subcategories: [
+      { name: "Kurtas", path: "kurtas", icon: "🧥" },
+      { name: "Sherwanis", path: "sherwanis", icon: "👘" },
+      { name: "Dhoti", path: "dhoti", icon: "👔" },
+      { name: "Ethnic Jackets", path: "ethnic-jackets", icon: "🧥" },
+      { name: "Traditional Footwear", path: "traditional-footwear", icon: "👡" }
+    ]
   },
   {
     name: "Women",
-    subcategories: ["Tops", "Dresses", "Jeans", "Skirts", "Footwear", "Accessories"]
+    path: "women",
+    subcategories: [
+      { name: "Tops", path: "tops", icon: "👚" },
+      { name: "Dresses", path: "dresses", icon: "👗" },
+      { name: "Jeans", path: "jeans", icon: "👖" },
+      { name: "Skirts", path: "skirts", icon: "👗" },
+      { name: "Footwear", path: "footwear", icon: "👠" },
+      { name: "Accessories", path: "accessories", icon: "👜" }
+    ]
   },
   {
     name: "Women Traditionals",
-    subcategories: ["Sarees", "Kurtis", "Lehengas", "Salwar Suits", "Ethnic Footwear"]
+    path: "women-traditionals",
+    subcategories: [
+      { name: "Sarees", path: "sarees", icon: "🥻" },
+      { name: "Kurtis", path: "kurtis", icon: "👚" },
+      { name: "Lehengas", path: "lehengas", icon: "👗" },
+      { name: "Salwar Suits", path: "salwar-suits", icon: "👘" },
+      { name: "Ethnic Footwear", path: "ethnic-footwear", icon: "👡" }
+    ]
   },
   {
     name: "Winter Wears",
-    subcategories: ["Jackets", "Sweaters", "Coats", "Thermals", "Scarves", "Gloves"]
+    path: "winter-wears",
+    subcategories: [
+      { name: "Jackets", path: "jackets", icon: "🧥" },
+      { name: "Sweaters", path: "sweaters", icon: "🧶" },
+      { name: "Coats", path: "coats", icon: "🧥" },
+      { name: "Thermals", path: "thermals", icon: "👕" },
+      { name: "Scarves", path: "scarves", icon: "🧣" },
+      { name: "Gloves", path: "gloves", icon: "🧤" }
+    ]
   }
 ];
 
 export const CategoryNavbar = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleCategoryHover = (categoryName: string) => {
     setHoveredCategory(categoryName);
@@ -47,6 +94,11 @@ export const CategoryNavbar = () => {
         setActiveCategory(null);
       }
     }, 150);
+  };
+
+  const handleSubcategoryClick = (categoryPath: string, subcategoryPath: string) => {
+    navigate(`/${categoryPath}/${subcategoryPath}`);
+    setActiveCategory(null);
   };
 
   return (
@@ -77,14 +129,16 @@ export const CategoryNavbar = () => {
 
               {/* Dropdown Menu */}
               {activeCategory === category.name && (
-                <div className="absolute top-full left-0 mt-1 dropdown-eco min-w-48 z-50">
+                <div className="absolute top-full left-0 mt-1 min-w-64 z-50 backdrop-blur-md bg-white/90 shadow-lg rounded-md border border-gray-200 overflow-hidden">
                   <div className="py-2">
                     {category.subcategories.map((subcategory) => (
                       <button
-                        key={subcategory}
-                        className="block w-full text-left px-4 py-2 text-sm text-foreground teal-hover transition-colors duration-200"
+                        key={subcategory.path}
+                        onClick={() => handleSubcategoryClick(category.path, subcategory.path)}
+                        className="flex items-center w-full text-left px-4 py-3 text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors duration-200"
                       >
-                        {subcategory}
+                        <span className="text-2xl mr-3">{subcategory.icon}</span>
+                        <span>{subcategory.name}</span>
                       </button>
                     ))}
                   </div>

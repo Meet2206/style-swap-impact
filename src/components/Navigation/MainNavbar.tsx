@@ -42,8 +42,27 @@ export const MainNavbar = ({ isLoggedIn = false, username, onLoginClick, onLogou
             </div>
           </div>
 
-          {/* Desktop Actions */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Impact Counter & Desktop Actions */}
+          <div className="hidden md:flex items-center space-x-6">
+            {/* Live Impact Counter */}
+            <div className="flex items-center space-x-4 bg-gradient-eco text-white rounded-lg px-4 py-2 shadow-eco">
+              <div className="text-center">
+                <div className="text-xs opacity-80">Clothes</div>
+                <div className="text-sm font-bold counter-flip">12,847</div>
+              </div>
+              <div className="h-6 w-px bg-white/30"></div>
+              <div className="text-center">
+                <div className="text-xs opacity-80">Waste (kg)</div>
+                <div className="text-sm font-bold counter-flip">3,456</div>
+              </div>
+              <div className="h-6 w-px bg-white/30"></div>
+              <div className="text-center">
+                <div className="text-xs opacity-80">CO₂ (kg)</div>
+                <div className="text-sm font-bold counter-flip">2,789</div>
+              </div>
+            </div>
+
+            {/* User Actions */}
             {isLoggedIn ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

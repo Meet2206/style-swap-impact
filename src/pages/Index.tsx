@@ -32,14 +32,6 @@ const Index = () => {
       />
       <CategoryNavbar />
 
-      {/* Live Impact Counter - Sticky */}
-      <div className="sticky top-32 z-40 container mx-auto px-4 mb-8">
-        <div className="flex justify-center">
-          <div className="w-full max-w-md">
-            <LiveCounter />
-          </div>
-        </div>
-      </div>
 
       {/* Main Content */}
       <main>
