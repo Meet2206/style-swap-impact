@@ -1,10 +1,10 @@
-import { Category, Product, User, GlobalStats } from '../types';
+import { Category, Product, Users, GlobalStats } from '../types';
 
-export const mockUser: User = {
+export const mockUser: Users = {
   id: '1',
   username: 'EcoWarrior23',
   location: 'San Francisco, CA',
-  avatar: '/avatars/avatar1.svg',
+  avatar: 1,
   totalShared: 24,
   swaps: 18,
   rewardPoints: 450,
